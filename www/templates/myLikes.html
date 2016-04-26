@@ -1,0 +1,22 @@
+<ion-view title="My Likes">
+  <ion-content overflow-scroll="true" padding="true" class="has-header" ng-controller="myLikesController as ml">
+    <form action="">
+      <!--<button class="button button-clear" ng-click="ml.getLikes()">Click Me</button>-->
+
+      <h1 class="rcArtistName">{{ml.currentArtist}}</h1>
+      <img class="rcImg" class="cover" ng-src="{{ml.bandPic}}"/>
+      <div>
+      {{"Popularity: " + ml.popularity}}</br>
+      {{"Genre: " + ml.genre}}
+      </div>
+      <div class="item-button-right">
+        <button class="button item-button-right" ui-sref="tabsController.artistHome" ng-click="ml.artistStuff(ml.currentArtist, ml.bandPic)">Artist Page</button>
+      </div>
+      <br/>
+
+      <ul ng-repeat="liked in ml.artistService.currentLikes">
+        <li class="button button-block button-dark" ng-click="ml.artistSearch(liked.Artist_Name)">{{liked.Artist_Name}}</li>
+      </ul>
+    </form>
+  </ion-content>
+</ion-view>

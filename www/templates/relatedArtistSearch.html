@@ -1,0 +1,32 @@
+
+<ion-view title="Related Search">
+    <ion-content overflow-scroll="true" padding="true" class="has-header" ng-controller="RelatedArtistController as rc">
+        <form class="list">
+            <label class="item item-input">
+                <!--<span class="input-label">Input</span>-->
+                <input type="text" placeholder="Type Artist Name" ng-model="rc.artist">
+                <button class="button button-clear" type="submit"  ng-click="rc.artistSearch(rc.artist)"></button>
+
+            </label>
+          <div class="noResults" ng-show="rc.results === 'noGood'">Sorry. Your search didn't return any results. Please try another artist name.</div>
+
+          <ul class="list" ng-repeat="artist in rc.artistArray">
+                <li class="item item-thumbnail-left" ui-sref="tabsController.artistHome" ng-click="rc.currentArtist(artist.name, artist.images[0].url)">
+                    <img class="rcImg" ng-src="{{artist.images[1].url}}"/>
+                    <br> <br>
+                    <span class="rcArtistName">{{artist.name}}</span> <br>
+                    {{"Popularity: " + artist.popularity}}
+                    <!--<br> {{"Genre: " + artist.genres[0]}}-->
+
+                    <div class="item-button-right">
+                        <button class="item-button-right button smallText" >Artist Page</button>
+                    </div>
+                </li>
+
+
+            </ul>
+
+        </form>
+
+    </ion-content>
+</ion-view>

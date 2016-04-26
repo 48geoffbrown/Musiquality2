@@ -1,0 +1,29 @@
+<ion-view title="Feedback"  ng-init="emails = [{ from: 'John', subject: 'I love angular', date: 'Jan 1' }]">
+    <ion-content overflow-scroll="true" padding="true" class="has-header"  ng-controller="FeedbackController as fc">
+        <form class="list">
+            <label class="item">
+                <input ng-click="fc.hideAlert()" class="feedbackInput" type="text" placeholder="Enter your email" ng-model="fc.name">
+
+            </label>
+            <div ng-show="fc.noName" class="feedbackAlert">
+                Please enter your email address.
+            </div>
+            <br/>
+            <label class="item">
+                <span class="input-label"></span>
+                <textarea ng-click="fc.hideAlert()" class="feedbackInput" type="text" placeholder="Enter your feedback" ng-model="fc.messages"></textarea>
+
+            </label>
+            <div ng-show="fc.noMessage" class="feedbackAlert">
+                Please include your feedback.
+            </div>
+
+        </form>
+        <button class="button button-dark button-block " ng-click="fc.feedback()">Send</button>
+        <div class="feedbackSent" ng-show="fc.messageSent">
+            <h4>Your feedback has been sent.</h4>
+            <h4>Thank You!!</h4>
+            <h3 class="ion-music-note" id="musicIcon"></h3>
+        </div>
+    </ion-content>
+</ion-view>

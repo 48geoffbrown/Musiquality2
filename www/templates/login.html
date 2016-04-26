@@ -1,0 +1,39 @@
+<ion-view title="Login" class="loginPage">
+  <ion-content overflow-scroll="true" padding="true" class="has-header">
+
+    <form class="list">
+
+      <div ng-controller="MainController as vm">
+
+        <div ng-hide="vm.loggedIn">
+
+          <h2>Welcome to</h2>
+          <div class="aboutBG"></div>
+
+          <br/>
+          <br/>
+
+
+          <button ng-click="vm.facebookLogin()">Log in with Facebook</button>
+          <button ng-click="vm.googleLogin()">Log in with Google</button>
+
+
+        </div>
+
+        <div ng-show="vm.loggedIn">
+
+          <h2>Log in successful!!</h2>
+          <br/>
+          <div class="aboutBG"></div>
+          <br/>
+          <a ui-sref="tabsController.home"><button>Continue</button></a>
+          <br/>
+
+          </div>
+
+      </div>
+
+    </form>
+
+  </ion-content>
+</ion-view>

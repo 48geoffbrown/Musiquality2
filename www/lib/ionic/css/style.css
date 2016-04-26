@@ -1,0 +1,109 @@
+.scroll-content {
+
+    background-image: url("http://www.robriemen.nl/assets/2015/06/945-450-Mass-840x450.jpg");
+    /*background-image: url("https://www.mykomms.com/external/grouplogo/uts-lv11-Zinal-av20150727015343-39532411937rfnZuj01W.jpg");*/
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.backGroundImage {
+    background-color: whitesmoke;
+}
+
+
+.rcImg {
+    height: 100px;
+}
+
+.rcArtistName {
+    font-size: larger;
+}
+.buttonStyle{
+    margin-bottom: 12px;
+}
+.hiddenBtn{
+    display: none;
+}
+
+
+.fullImage {
+    width: 100%;
+}
+
+.fullFont {
+    font-size: 3em;
+}
+
+.feedbackInput{
+    height: 150px;
+    width: 100%;
+}
+h4{
+    color: cornflowerblue;
+    text-align: center;
+}
+.aboutText{
+    text-align: center;
+
+}
+#musicIcon{
+    color: cornflowerblue;
+    text-align: center;
+}
+.homeNote{
+    text-align: center;
+    font-size: xx-large;
+}
+.likeBtn{
+    left: 80%;
+
+}
+#aboutTextTitle {
+    font-family: Copperplate;
+    font-size: 2em;
+    line-height: 24px;
+}
+
+
+
+.aboutTextContent {
+    font-family: AppleGothic;
+    font-size: 1em;
+    line-height: 15px;
+}
+
+
+#aboutTextCreatedBy {
+    font-family: Copperplate;
+    font-size: .75em;
+    line-height: 15px;
+}
+
+
+
+.loginPage{
+    text-align: center;
+}
+.feedbackSent{
+    background-color: black;
+    border-radius: 10%;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding-top: 10px;
+}
+.aboutBG{
+    background-image: url("Untitled%202.png");
+    background-size: 100% 100%;
+    height: 100px;
+    width: 219px;
+    margin: auto;
+}
+.feedbackAlert{
+    color: red;
+    background-color: white;
+    font-weight: bolder;
+}
+.noResults{
+    color: red;
+}
