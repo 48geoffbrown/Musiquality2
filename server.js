@@ -1,34 +1,60 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var fs = require('fs');
+var cookieParser = require('cookie-parser');
+var expressSession = require('express-session');
+var passport = require('passport');
+var googleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var facebookStrategy = require('passport-facebook').Strategy;
+var musiqualityDb;
+var config = require('./config.json');
+var MongoClient = require('mongodb').MongoClient;
 
-var MongoClient = require('mongodb').MongoClient
-    , assert = require('assert');
 
 // Connection URL
 var url = 'mongodb://localhost:27017/Musiquality';
 // Use connect method to connect to the Server
 MongoClient.connect(url, function (err, db) {
-    assert.equal(null, err);
+    if(err){
+        console.log(err);
+        process.exit(1);
+    }
+    musiqualityDb = db;
+    var port = 3343;
+    app.listen(port, function () {
+        console.log(`App listening on port ${port}...`);
+    });
+
     console.log("Connected correctly to server");
 
-    // insertDocuments(db, function() {
-    //     updateDocument(db, function(){
-    //         removeDocument(db, function() {
-    findDocuments(db, function () {
-        db.close();
-    });
-    //         });
-    //     });
-    // });
 });
 
-var movies = [];
-
+app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(expressSession({secret: 'picklejuice', resave: true, saveUninitialized: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new googleStrategy({
+    clientID: config.googleClientId,
+    clientSecret: config.googleClientSecret,
+    callbackURL: "http://localhost:3343/auth/google/callback"
+}, function(accesToken, refreshToken, profile, cb) {
+    console.log(profile);
+    cb(null, {});
+}));
+
+passport.use(new facebookStrategy({
+    clientID: config.facebookClientId,
+    clientSecret: config.facebookClientSecret,
+    callbackURL: "http://localhost:3343/auth/facebook/callback"
+}, function(accesToken, refreshToken, profile, cb) {
+    console.log(profile);
+    cb(null, {});
+}));
+
 
 app.use('/', express.static(__dirname + '/client'));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
@@ -53,84 +79,51 @@ var findDocuments = function (db, callback) {
 
 };
 
-app.get('/api/movies', (req, res) => {
-    res.send(movies);
-});
+app.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile'] }));
 
-app.get('/api/searchmovie/:title', (req, res) => {
-    console.log('searching', req.params);
-    var title = req.params.title;
-    var found = [];
-    for (var i = 0; i < movies.length; i++) {
-        if (movies[i].title === title) {
-            found = [movies[i]];
-        }
-    }
-    console.log(found);
-    res.json(found).end();
-});
-
-
-app.post('/api/savemovie', (req, res) => {
-    console.log(req.body);
-    MongoClient.connect(url, function (err, db) {
-        assert.equal(null, err);
-        var collection = db.collection('movie');
-
-        // Insert some documents
-        collection.insertOne(
-            req.body, function (err, result) {
-                assert.equal(err, null);
-                movies.push(req.body);
-                res.send(movies);
-                // TODO: close the database!
-            });
-
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function(req, res) {
+        // Successful authentication, redirect home.
+        res.redirect('/');
     });
 
+app.get('/auth/facebook',
+    passport.authenticate('facebook'));
 
-
-});
-
-app.post('/api/removemovie', (req, res) => {
-    console.log(req.body);
-    for (var i = 0; i < movies.length; i++) {
-        if (movies[i].title === req.body.title) {
-            movies.splice(i, 1);
-        }
-    }
-
-    fs.writeFile('movies.json', JSON.stringify(movies), (err) => {
-        if (err) res.send("Wrong");
+app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    function(req, res) {
+        // Successful authentication, redirect home.
+        res.redirect('/');
     });
 
-    res.json(movies).end();
+app.get('/login', (req, res, next) => {
 
 });
 
-app.post('/api/checkout', (req, res) => {
-    console.log(req.body);
-    var title = req.body.title;
-    for (var i = 0; i < movies.length; i++) {
-        if (movies[i].title === title) {
-            if (movies[i].checkedOut === false) {
-                movies[i].checkedOut = true;
-            }
-            else if (movies[i].checkedOut === true) {
-                movies[i].checkedOut = false;
-            }
-        }
-    }
-
-    fs.writeFile('movies.json', JSON.stringify(movies), (err) => {
-        if (err) res.send("Wrong");
-    });
-
-    res.json(movies).end();
+app.get('/api/like', (req, res, next) => {
 
 });
 
-var port = 3343;
-app.listen(port, function () {
-    console.log(`App listening on port ${port}...`);
+app.post('/api/like/:artistName', (req, res, next) => {
+
 });
+
+app.put('/api/like/:artistName', (req, res, next) => {
+
+});
+
+app.delete('/api/like/:artistName', (req, res, next) => {
+
+});
+
+app.post('/api/feedback', (req, res, next) => {
+
+});
+
+
+
+
+
