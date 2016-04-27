@@ -29,6 +29,7 @@ MongoClient.connect(url, function (err, db) {
 
 });
 
+
 app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -78,6 +79,14 @@ var findDocuments = function (db, callback) {
     });
 
 };
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+});
+app.get('/');
 
 app.get('/auth/google',
     passport.authenticate('google', { scope: ['profile'] }));
@@ -86,7 +95,7 @@ app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     function(req, res) {
         // Successful authentication, redirect home.
-        res.redirect('/');
+        res.redirect('/#/page6');
     });
 
 app.get('/auth/facebook',
@@ -96,7 +105,7 @@ app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
         // Successful authentication, redirect home.
-        res.redirect('/');
+        res.redirect('/#/page6');
     });
 
 app.get('/login', (req, res, next) => {
