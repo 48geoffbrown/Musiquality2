@@ -5,10 +5,12 @@
 
       <h1 class="rcArtistName">{{ml.currentArtist}}</h1>
       <img class="rcImg" class="cover" ng-src="{{ml.bandPic}}"/>
+      <button class="ion-ios-trash" ng-click="ah.likesPage()"></button>
       <div>
       {{"Popularity: " + ml.popularity}}</br>
       {{"Genre: " + ml.genre}}
       </div>
+      <span class="ion-ios-star-outline"></span>
       <div class="item-button-right">
         <button class="button item-button-right" ui-sref="tabsController.artistHome" ng-click="ml.artistStuff(ml.currentArtist, ml.bandPic)">Artist Page</button>
       </div>

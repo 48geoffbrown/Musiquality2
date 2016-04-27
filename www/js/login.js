@@ -23,41 +23,28 @@ function MainController($timeout, $localStorage, userService) {
 
     // use Firebase library to login to facebook
     function facebookLogin() {
-        var ref = new Firebase(url);
-        ref.authWithOAuthPopup('facebook', function (error, authData) {
-            if (error) {
-                console.log('Log in to Facebook Failed', error);
-                vm.message = 'Log in to Facebook Failed. ' + error;
-            } else {
-                console.log('Logged in to Facebook');
-                vm.message = 'Logged in to Facebook.';
-                $timeout(function () { // invokes $scope.$apply()
-                    //vm.fbData = authData;
-                  userService.update();
-                });
-                vm.loggedIn = true;
-
-            }
-
-        });
+        location.href = 'http://localhost:3343/auth/facebook';
+        //var ref = new Firebase(url);
+        //ref.authWithOAuthPopup('facebook', function (error, authData) {
+        //    if (error) {
+        //        console.log('Log in to Facebook Failed', error);
+        //        vm.message = 'Log in to Facebook Failed. ' + error;
+        //    } else {
+        //        console.log('Logged in to Facebook');
+        //        vm.message = 'Logged in to Facebook.';
+        //        $timeout(function () { // invokes $scope.$apply()
+        //            //vm.fbData = authData;
+        //          userService.update();
+        //        });
+        //        vm.loggedIn = true;
+        //
+        //    }
+        //
+        //});
     }
 
     function googleLogin() {
-        var ref = new Firebase(url);
-        ref.authWithOAuthPopup('google', function (error, authData) {
-            if (error) {
-                console.log('Log in to Google Failed', error);
-                vm.message = 'Log in to Facebook Failed. ' + error;
-            } else {
-                console.log('Logged in to Google');
-                vm.message = 'Logged in to Google.';
-                $timeout(function () { // invokes $scope.$apply()
-                    //vm.fbData = authData;
-                  userService.update();
-                });
-                vm.loggedIn = true;
-            }
-        });
+        location.href = 'http://localhost:3343/auth/google';
     }
 
     // this removes facebook data from local storage
