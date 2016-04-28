@@ -20,7 +20,7 @@ MongoClient.connect(url, function (err, db) {
         process.exit(1);
     }
     musiqualityDb = db;
-    var port = 3343;
+    var port = 8100;
     app.listen(port, function () {
         console.log(`App listening on port ${port}...`);
     });
@@ -41,7 +41,7 @@ app.use(passport.session());
 passport.use(new googleStrategy({
     clientID: config.googleClientId,
     clientSecret: config.googleClientSecret,
-    callbackURL: "http://localhost:3343/auth/google/callback"
+    callbackURL: "http://localhost:8100/auth/google/callback"
 }, function(accesToken, refreshToken, profile, cb) {
     console.log(profile);
     cb(null, {});
@@ -50,14 +50,14 @@ passport.use(new googleStrategy({
 passport.use(new facebookStrategy({
     clientID: config.facebookClientId,
     clientSecret: config.facebookClientSecret,
-    callbackURL: "http://localhost:3343/auth/facebook/callback"
+    callbackURL: "http://localhost:8100/auth/facebook/callback"
 }, function(accesToken, refreshToken, profile, cb) {
-    console.log(profile);
-    cb(null, {});
+    //console.log(profile);
+    cb(null, {userId: profile.id});
 }));
 
 
-app.use('/', express.static(__dirname + '/client'));
+app.use('/', express.static(__dirname + '/www'));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 // fs.readFile('likes.json', 'utf8', (err, data) => {
@@ -92,20 +92,20 @@ app.get('/auth/google',
     passport.authenticate('google', { scope: ['profile'] }));
 
 app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
+    passport.authenticate('google', { failureRedirect: '/#/page6' }),
     function(req, res) {
         // Successful authentication, redirect home.
-        res.redirect('/#/page6');
+        res.redirect('/#/tabs/page8');
     });
 
 app.get('/auth/facebook',
     passport.authenticate('facebook'));
 
 app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    passport.authenticate('facebook', { failureRedirect: '/#/page6' }),
     function(req, res) {
         // Successful authentication, redirect home.
-        res.redirect('/#/page6');
+        res.redirect('/#/tabs/page8');
     });
 
 app.get('/login', (req, res, next) => {
@@ -116,9 +116,21 @@ app.get('/api/like', (req, res, next) => {
 
 });
 
-app.post('/api/like/:artistName', (req, res, next) => {
+app.post('/api/like', (req, res, next) => {
+    console.log(req.body);
+    MongoClient.connect(url, function (err, db) {
+        var collection = db.collection('user');
+        // Insert some documents
+        collection.insertOne(
+            req.body,
+            function (err, result) {
+                //assert.equal(err, null);
 
-});
+                res.end();
+            }
+
+        )
+})});
 
 app.put('/api/like/:artistName', (req, res, next) => {
 
