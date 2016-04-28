@@ -19,8 +19,7 @@ angular.module('app', ['ionic',
   'userService',
   'artistService',
   'feedback',
-  'myLikes',
-  'client'
+  'myLikes'
 
 ])
 
