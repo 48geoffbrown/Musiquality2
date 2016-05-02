@@ -15,122 +15,104 @@ var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost:27017/Musiquality';
 // Use connect method to connect to the Server
 MongoClient.connect(url, function (err, db) {
-    if(err){
-        console.log(err);
-        process.exit(1);
-    }
-    musiqualityDb = db;
-    var port = 8100;
-    app.listen(port, function () {
-        console.log(`App listening on port ${port}...`);
-    });
+  if (err) {
+    console.log(err);
+    process.exit(1);
+  }
+  musiqualityDb = db;
+  var port = 8100;
+  app.listen(port, function () {
+    console.log(`App listening on port ${port}...`);
+  });
 
-    console.log("Connected correctly to server");
+  console.log("Connected correctly to server");
 
 });
 
 
 app.use(cookieParser());
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(expressSession({secret: 'picklejuice', resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new googleStrategy({
-    clientID: config.googleClientId,
-    clientSecret: config.googleClientSecret,
-    callbackURL: "http://localhost:8100/auth/google/callback"
-}, function(accesToken, refreshToken, profile, cb) {
-    console.log(profile);
-    cb(null, {});
+  clientID: config.googleClientId,
+  clientSecret: config.googleClientSecret,
+  callbackURL: "http://localhost:8100/auth/google/callback"
+}, function (accesToken, refreshToken, profile, cb) {
+  // console.log(profile);
+  cb(null, profile);
 }));
 
 passport.use(new facebookStrategy({
-    clientID: config.facebookClientId,
-    clientSecret: config.facebookClientSecret,
-    callbackURL: "http://localhost:8100/auth/facebook/callback"
-}, function(accesToken, refreshToken, profile, cb) {
-    //console.log(profile);
-    cb(null, {userId: profile.id});
+  clientID: config.facebookClientId,
+  clientSecret: config.facebookClientSecret,
+  callbackURL: "http://localhost:8100/auth/facebook/callback"
+}, function (accesToken, refreshToken, profile, cb) {
+  console.log(profile);
+  cb(null, profile);
 }));
 
 
 app.use('/', express.static(__dirname + '/www'));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
-// fs.readFile('likes.json', 'utf8', (err, data) => {
-// 	movies = JSON.parse(data);
-// 	console.log(movies);
-// });
-
-var findDocuments = function (db, callback) {
-    // Get the documents collection
-    var collection = db.collection('movie');
-    // Find some documents
-    collection.find({}).toArray(function (err, docs) {
-        assert.equal(err, null);
-        assert.equal(1, docs.length);
-        console.log("Found the following records");
-        console.dir(docs);
-        movies = docs;
-        callback(docs);
-    });
-
-};
-passport.serializeUser(function(user, done) {
-    done(null, user);
+passport.serializeUser(function (user, done) {
+  // console.log(user);
+  done(null, user);
 });
 
-passport.deserializeUser(function(user, done) {
-    done(null, user);
+passport.deserializeUser(function (user, done) {
+  // console.log(user);
+  done(null, user);
 });
+
 app.get('/');
 
 app.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile'] }));
+  passport.authenticate('google', {scope: ['profile']}));
 
 app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/#/page6' }),
-    function(req, res) {
-        // Successful authentication, redirect home.
-        res.redirect('/#/tabs/page8');
-    });
+  passport.authenticate('google', {failureRedirect: '/#/page6'}),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/#/tabs/page8');
+  });
 
 app.get('/auth/facebook',
-    passport.authenticate('facebook'));
+  passport.authenticate('facebook'));
 
 app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/#/page6' }),
-    function(req, res) {
-        // Successful authentication, redirect home.
-        res.redirect('/#/tabs/page8');
-    });
-
-app.get('/login', (req, res, next) => {
-
-});
+  passport.authenticate('facebook', {failureRedirect: '/#/page6'}),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/#/tabs/page8');
+  });
 
 app.get('/api/like', (req, res, next) => {
 
 });
 
 app.post('/api/like', (req, res, next) => {
-    console.log(req.body);
-    MongoClient.connect(url, function (err, db) {
-        var collection = db.collection('user');
-        // Insert some documents
-        collection.insertOne(
-            req.body,
-            function (err, result) {
-                //assert.equal(err, null);
+  MongoClient.connect(url, function (err, db) {
+    var collection = db.collection('user');
+    // Insert some documents
+    var likeArtist = req.body;
+    likeArtist.userId = req.user.id;
+    console.log(likeArtist);
+    collection.insertOne(
+      likeArtist,
+      function (err, result) {
+        //assert.equal(err, null);
 
-                res.end();
-            }
-
-        )
-})});
+        res.end();
+      }
+    );
+  });
+});
 
 app.put('/api/like/:artistName', (req, res, next) => {
 
