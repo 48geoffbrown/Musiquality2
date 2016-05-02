@@ -44,15 +44,14 @@ function MainController($timeout, $localStorage, userService) {
     }
 
     function googleLogin() {
-        console.log('worked');
         location.href = 'http://localhost:8100/auth/google';
         if (error) {
-            console.log('Log in to Facebook Failed', error);
-            vm.message = 'Log in to Facebook Failed. ' + error;
+            console.log('Log in to Google Failed', error);
+            vm.message = 'Log in to Google Failed. ' + error;
         }
         else {
-            console.log('Logged in to Facebook');
-            vm.message = 'Logged in to Facebook.';
+            console.log('Logged in to Google');
+            vm.message = 'Logged in to Google.';
             $timeout(function () { // invokes $scope.$apply()
                 //vm.fbData = authData;
                 userService.update();
