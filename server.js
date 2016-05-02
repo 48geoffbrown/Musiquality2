@@ -93,7 +93,13 @@ app.get('/auth/facebook/callback',
   });
 
 app.get('/api/like', (req, res, next) => {
-
+  MongoClient.connect(url, function (err, db) {
+    var collection = db.collection('user');
+    collection.find({userId: req.user.id}).toArray(function(err, docs){
+      res.json(docs);
+      console.log(err, docs);
+    });
+  });
 });
 
 app.post('/api/like', (req, res, next) => {
