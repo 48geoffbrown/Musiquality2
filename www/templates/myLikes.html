@@ -10,7 +10,11 @@
       {{"Popularity: " + ml.popularity}}</br>
       {{"Genre: " + ml.genre}}
       </div>
-      <span class="ion-ios-star-outline"></span>
+      <span class="ion-ios-star-outline" ng-click="ml.rating(1, ml.currentArtist)" id="star1"></span>
+      <span class="ion-ios-star-outline" ng-click="ml.rating(2, ml.currentArtist)" id="star2"></span>
+      <span class="ion-ios-star-outline" ng-click="ml.rating(3, ml.currentArtist)" id="star3"></span>
+      <span class="ion-ios-star-outline" ng-click="ml.rating(4, ml.currentArtist)" id="star4"></span>
+      <span class="ion-ios-star-outline" ng-click="ml.rating(5, ml.currentArtist)" id="star5"></span>
       <div class="item-button-right">
         <button class="button item-button-right" ui-sref="tabsController.artistHome" ng-click="ml.artistStuff(ml.currentArtist, ml.bandPic)">Artist Page</button>
       </div>

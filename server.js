@@ -108,6 +108,7 @@ app.post('/api/like', (req, res, next) => {
     // Insert some documents
     var likeArtist = req.body;
     likeArtist.userId = req.user.id;
+    likeArtist.rating = 0;
     // console.log(likeArtist);
     collection.insertOne(
       likeArtist,
@@ -120,8 +121,16 @@ app.post('/api/like', (req, res, next) => {
   });
 });
 
-app.put('/api/like/:artistName', (req, res, next) => {
-
+app.post('/api/rating', (req, res, next) => {
+  // console.log(req.body);
+  var filter = {userId: req.user.id};
+  filter.ArtistName = req.body.ArtistName;
+  var updated = {ArtistName: req.body.ArtistName, userId: req.user.id, rating: req.body.rating};
+  MongoClient.connect(url, function (err, db) {
+    var collection = db.collection('user');
+    collection.updateOne(filter, updated);
+    res.end();
+  });
 });
 
 app.post('/api/deleteLike', (req, res, next) => {
