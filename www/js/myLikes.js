@@ -19,6 +19,7 @@ function myLikesController($http, userService, $scope, $state, artistService) {
   ml.artistStuff = artistStuff;
   ml.artistSearch = artistSearch;
   ml.deleteLike = deleteLike;
+  ml.rating = rating;
 
 
   function artistSearch(artist) {
@@ -39,7 +40,25 @@ function myLikesController($http, userService, $scope, $state, artistService) {
   }
 
   function deleteLike(artist) {
-    console.log(artist);
+    // console.log(artist);
     ml.$http.post('/api/deleteLike', {ArtistName: artist});
+  }
+
+  function rating(rating, artist) {
+    console.log(rating, artist);
+    for(var i = 1; i < 6; i++) {
+      var starRating = "#" + "star" + [i];
+      console.log(starRating);
+      $(starRating).removeClass("ion-ios-star-outline");
+      $(starRating).removeClass("ion-ios-star");
+      $(starRating).addClass("ion-ios-star-outline");
+    }
+    for(var j = 1; j <= rating; j++) {
+      var starRating2 = "#" + "star" + [j];
+      console.log(starRating2);
+      $(starRating2).removeClass("ion-ios-star-outline");
+      $(starRating2).addClass("ion-ios-star");
+    }
+    ml.$http.post('/api/rating', {rating: rating, ArtistName: artist});
   }
 }
