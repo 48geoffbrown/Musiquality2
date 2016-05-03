@@ -5,18 +5,20 @@ var app = angular.module('myLikes', []);
 
 app.controller('myLikesController', myLikesController);
 
-myLikesController.$inject = ['$http', 'userService','$scope', '$state', 'artistService'];
+myLikesController.$inject = ['$http', 'userService', '$scope', '$state', 'artistService'];
 
 function myLikesController($http, userService, $scope, $state, artistService) {
 // controller data and functions
-    var ml = this;
-    ml.artistService = artistService;
-    ml.currentArtist = '';
-    ml.popularity = '';
-    ml.genre = '';
-    ml.bandPic = '';
-    ml.artistStuff = artistStuff;
-    ml.artistSearch = artistSearch;
+  var ml = this;
+  ml.artistService = artistService;
+  ml.currentArtist = '';
+  ml.popularity = '';
+  ml.genre = '';
+  ml.bandPic = '';
+  ml.$http = $http;
+  ml.artistStuff = artistStuff;
+  ml.artistSearch = artistSearch;
+  ml.deleteLike = deleteLike;
 
 
   function artistSearch(artist) {
@@ -29,10 +31,15 @@ function myLikesController($http, userService, $scope, $state, artistService) {
     });
   }
 
-    function artistStuff(name, pic){
-        artistService.currentArtist = name;
-        artistService.bandPic = pic;
-        artistService.id = '';
-        //$state.go('tabsController.artistHome', {}, {reload: true});
-    }
+  function artistStuff(name, pic) {
+    artistService.currentArtist = name;
+    artistService.bandPic = pic;
+    artistService.id = '';
+    //$state.go('tabsController.artistHome', {}, {reload: true});
+  }
+
+  function deleteLike(artist) {
+    console.log(artist);
+    ml.$http.post('/api/deleteLike', {ArtistName: artist});
+  }
 }

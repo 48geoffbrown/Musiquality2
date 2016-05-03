@@ -69,7 +69,7 @@ angular.module('app.routes', [])
           return $http.get('/api/like', {
 
           }).then(response => {
-            console.log(response);
+            // console.log(response);
             artistService.currentLikes = response.data;
           });
           // return $http.get("https://musiquality.firebaseio.com/users/" + userService.user.uid + '.json').then(function(response){

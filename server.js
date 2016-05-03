@@ -52,7 +52,7 @@ passport.use(new facebookStrategy({
   clientSecret: config.facebookClientSecret,
   callbackURL: "http://localhost:8100/auth/facebook/callback"
 }, function (accesToken, refreshToken, profile, cb) {
-  console.log(profile);
+  // console.log(profile);
   cb(null, profile);
 }));
 
@@ -97,7 +97,7 @@ app.get('/api/like', (req, res, next) => {
     var collection = db.collection('user');
     collection.find({userId: req.user.id}).toArray(function(err, docs){
       res.json(docs);
-      console.log(err, docs);
+      // console.log(err, docs);
     });
   });
 });
@@ -108,7 +108,7 @@ app.post('/api/like', (req, res, next) => {
     // Insert some documents
     var likeArtist = req.body;
     likeArtist.userId = req.user.id;
-    console.log(likeArtist);
+    // console.log(likeArtist);
     collection.insertOne(
       likeArtist,
       function (err, result) {
@@ -124,8 +124,13 @@ app.put('/api/like/:artistName', (req, res, next) => {
 
 });
 
-app.delete('/api/like/:artistName', (req, res, next) => {
-
+app.post('/api/deleteLike', (req, res, next) => {
+  console.log(req.body);
+  MongoClient.connect(url, function (err, db) {
+    var collection = db.collection('user');
+    collection.deleteOne(req.body);
+    res.end();
+  });
 });
 
 app.post('/api/feedback', (req, res, next) => {
