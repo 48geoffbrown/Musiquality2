@@ -5,7 +5,7 @@
 
       <h1 class="rcArtistName">{{ml.currentArtist}}</h1>
       <img class="rcImg" class="cover" ng-src="{{ml.bandPic}}"/>
-      <button class="ion-ios-trash" ng-click="ah.likesPage()"></button>
+      <button class="ion-ios-trash" ng-click="ml.deleteLike(ml.currentArtist)"></button>
       <div>
       {{"Popularity: " + ml.popularity}}</br>
       {{"Genre: " + ml.genre}}
