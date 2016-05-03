@@ -134,7 +134,14 @@ app.post('/api/deleteLike', (req, res, next) => {
 });
 
 app.post('/api/feedback', (req, res, next) => {
-
+  console.log(req.body);
+  MongoClient.connect(url, function (err, db) {
+    var collection = db.collection('feedback');
+    var userMsg = req.body;
+    userMsg.userId = req.user.id;
+    collection.insertOne(userMsg);
+    res.end();
+  });
 });
 
 

@@ -4,8 +4,9 @@
 var app = angular.module('feedback', []);
 
 app.controller('FeedbackController', FeedbackController);
+FeedbackController.$inject = ['$http', 'artistService', 'userService'];
 
-function FeedbackController(artistService, userService) {
+function FeedbackController($http, artistService, userService) {
     // controller data and functions
 
 
@@ -15,6 +16,7 @@ function FeedbackController(artistService, userService) {
     fc.messages = '';
     fc.name = '';
     fc.username = artistService.login;
+    fc.$http = $http;
 
 
     function feedback() {
@@ -25,18 +27,29 @@ function FeedbackController(artistService, userService) {
             fc.noMessage = true;
         }
         else {
-            var ref = new Firebase("https://musiquality.firebaseio.com/");
+            userFeedback = fc.messages;
+            userName = fc.name;
+            console.log(userFeedback);
 
-            var postsRef = ref.child("feedback");
+            fc.$http.post('/api/feedback', {
+                UserFeedback: userFeedback,
+                UserName: userName
 
-            var newPostRef = postsRef.push();
-            newPostRef.set({
-                UserName: userService.user.uid,
-                Author: fc.name,
-                Feedback: fc.messages
-
-
-            });
+            }).then(response => {
+                console.log(response);
+        });
+            //var ref = new Firebase("https://musiquality.firebaseio.com/");
+            //
+            //var postsRef = ref.child("feedback");
+            //
+            //var newPostRef = postsRef.push();
+            //newPostRef.set({
+            //    UserName: userService.user.uid,
+            //    Author: fc.name,
+            //    Feedback: fc.messages
+            //
+            //
+            //});
             fc.messageSent = true;
             fc.messages = '';
             fc.name = '';
