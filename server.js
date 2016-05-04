@@ -20,7 +20,7 @@ MongoClient.connect(url, function (err, db) {
     process.exit(1);
   }
   musiqualityDb = db;
-  var port = 8100;
+  var port = process.env.PORT||8100;
   app.listen(port, function () {
     console.log(`App listening on port ${port}...`);
   });
