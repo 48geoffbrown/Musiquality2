@@ -122,7 +122,7 @@ app.post('/api/like', (req, res, next) => {
 });
 
 app.post('/api/rating', (req, res, next) => {
-  // console.log(req.body);
+  console.log(req.body);
   var filter = {userId: req.user.id};
   filter.ArtistName = req.body.ArtistName;
   var updated = {ArtistName: req.body.ArtistName, userId: req.user.id, rating: req.body.rating};
@@ -130,6 +130,21 @@ app.post('/api/rating', (req, res, next) => {
     var collection = db.collection('user');
     collection.updateOne(filter, updated);
     res.end();
+  });
+});
+
+app.get('/api/rating', (req, res, next) => {
+  // console.log(req.body);
+  // var artist = req.body.ArtistName;
+  var param = req.query;
+  MongoClient.connect(url, function (err, db) {
+    var collection = db.collection('user');
+    collection.find(req.query).toArray(function(err, docs){
+      console.log(docs[0].rating);
+      var rating = docs[0].rating;
+      res.json(rating);
+      // console.log(err, docs);
+    });
   });
 });
 

@@ -28,7 +28,12 @@ function myLikesController($http, userService, $scope, $state, artistService) {
       ml.bandPic = response.data.artists.items[0].images[1].url;
       ml.popularity = response.data.artists.items[0].popularity;
       ml.genre = response.data.artists.items[0].genres[0];
-
+    });
+    var mongoCall = '/api/rating?ArtistName=' + artist;
+    ml.$http.get(mongoCall).then(function (response) {
+      console.log(response.data);
+      var artistRating = response.data;
+      rating(artistRating, artist);
     });
   }
 
