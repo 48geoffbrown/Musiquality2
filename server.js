@@ -21,7 +21,7 @@ MongoClient.connect(url, function (err, db) {
   }
   musiqualityDb = db;
   var port = 8100;
-  app.listen(process.env.PORT||port, function () {
+  app.listen(port, function () {
     console.log(`App listening on port ${port}...`);
   });
 
