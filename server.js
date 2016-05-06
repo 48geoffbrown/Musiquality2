@@ -12,7 +12,8 @@ var MongoClient = require('mongodb').MongoClient;
 
 
 // Connection URL
-var url = 'mongodb://localhost:27017/Musiquality';
+var url = 'mongodb://Musiquality:ducktales@ds034279.mlab.com:34279/musiquality';
+// var url = 'mongodb://localhost:27017/Musiquality';
 // Use connect method to connect to the Server
 MongoClient.connect(url, function (err, db) {
   if (err) {
