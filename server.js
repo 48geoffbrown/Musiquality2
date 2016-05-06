@@ -42,7 +42,7 @@ app.use(passport.session());
 passport.use(new googleStrategy({
   clientID: config.googleClientId,
   clientSecret: config.googleClientSecret,
-  callbackURL: "http://localhost:8100/auth/google/callback"
+  callbackURL: "http://musiquality2.herokuapp.com/auth/google/callback"
 }, function (accesToken, refreshToken, profile, cb) {
   // console.log(profile);
   cb(null, profile);
@@ -51,7 +51,7 @@ passport.use(new googleStrategy({
 passport.use(new facebookStrategy({
   clientID: config.facebookClientId,
   clientSecret: config.facebookClientSecret,
-  callbackURL: "http://localhost:8100/auth/facebook/callback"
+  callbackURL: "http://musiquality2.herokuapp.com/auth/facebook/callback"
 }, function (accesToken, refreshToken, profile, cb) {
   // console.log(profile);
   cb(null, profile);
