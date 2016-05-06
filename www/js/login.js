@@ -23,7 +23,7 @@ function MainController($timeout, $localStorage, userService) {
 
     // use Firebase library to login to facebook
     function facebookLogin() {
-        location.href = 'http://localhost:8100/auth/facebook';
+        location.href = '/auth/facebook';
         //var ref = new Firebase(url);
         //ref.authWithOAuthPopup('facebook', function (error, authData) {
             if (error) {
@@ -44,7 +44,7 @@ function MainController($timeout, $localStorage, userService) {
     }
 
     function googleLogin() {
-        location.href = 'http://localhost:8100/auth/google';
+        location.href = '/auth/google';
         if (error) {
             console.log('Log in to Google Failed', error);
             vm.message = 'Log in to Google Failed. ' + error;
